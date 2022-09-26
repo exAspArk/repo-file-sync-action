@@ -103,6 +103,11 @@ try {
 			type: 'boolean',
 			default: false
 		}),
+		SKIP_GIT_FORCE: getInput({
+			key: 'SKIP_GIT_FORCE',
+			type: 'boolean',
+			default: false
+		}),
 		ORIGINAL_MESSAGE: getInput({
 			key: 'ORIGINAL_MESSAGE',
 			type: 'boolean',

@@ -123,6 +123,7 @@ Here are all the inputs [repo-file-sync-action](https://github.com/BetaHuhn/repo
 | `DRY_RUN` | Run everything except that nothing will be pushed | **No** | false |
 | `SKIP_CLEANUP` | Skips removing the temporary directory. Useful for debugging | **No** | false |
 | `SKIP_PR` | Skips creating a Pull Request and pushes directly to the default branch | **No** | false |
+| `SKIP_GIT_FORCE` | Skips using `git push --force` and tries to run `git pull --rebase` to avoid race conditions | **No** | false |
 | `FORK` | A Github account username. Changes will be pushed to a fork of target repos on this account. | **No** | false |
 
 ### Outputs

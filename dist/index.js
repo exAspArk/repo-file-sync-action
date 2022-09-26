@@ -21340,6 +21340,11 @@ try {
 			type: 'boolean',
 			default: false
 		}),
+		SKIP_GIT_FORCE: getInput({
+			key: 'SKIP_GIT_FORCE',
+			type: 'boolean',
+			default: false
+		}),
 		ORIGINAL_MESSAGE: getInput({
 			key: 'ORIGINAL_MESSAGE',
 			type: 'boolean',
@@ -21514,6 +21519,7 @@ const {
 	GITHUB_REPOSITORY,
 	OVERWRITE_EXISTING_PR,
 	SKIP_PR,
+	SKIP_GIT_FORCE,
 	PR_BODY,
 	BRANCH_PREFIX,
 	FORK
@@ -21864,18 +21870,22 @@ class Git {
 
 	async push() {
 		if (FORK) {
-			return execCmd(
-				`git push -u fork ${ this.prBranch } --force`,
-				this.workingDir
-			)
+			if (SKIP_GIT_FORCE) {
+				return execCmd(`git pull --rebase --set-upstream fork ${ this.prBranch }`, this.workingDir)
+				return execCmd(`git push -u fork ${ this.prBranch }`, this.workingDir)
+			} else {
+				return execCmd(`git push -u fork ${ this.prBranch } --force`, this.workingDir)
+			}
 		}
 		if (IS_INSTALLATION_TOKEN) {
 			return await this.createGithubVerifiedCommits()
 		}
-		return execCmd(
-			`git push ${ this.gitUrl } --force`,
-			this.workingDir
-		)
+		if (SKIP_GIT_FORCE) {
+			return execCmd(`git pull --rebase --set-upstream ${ this.gitUrl }`, this.workingDir)
+			return execCmd(`git push ${ this.gitUrl }`, this.workingDir)
+		} else {
+			return execCmd(`git push ${ this.gitUrl } --force`, this.workingDir)
+		}
 	}
 
 	async findExistingPr() {
@@ -22353,6 +22363,7 @@ const {
 	SKIP_CLEANUP,
 	OVERWRITE_EXISTING_PR,
 	SKIP_PR,
+	SKIP_GIT_FORCE,
 	ORIGINAL_MESSAGE,
 	COMMIT_AS_PR_TITLE,
 	FORK,

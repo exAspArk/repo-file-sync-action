@@ -83,6 +83,10 @@ inputs:
     description: |
       Skips creating a Pull Request and pushes directly to the default branch. Defaults to false
     required: false
+  SKIP_GIT_FORCE:
+    description: |
+      Skips using 'git push --force' and tries to run 'git pull --rebase' to avoid race conditions
+    required: false
   BRANCH_PREFIX:
     description: |
       Specify a different prefix for the new branch in the target repo. Defaults to repo-sync/SOURCE_REPO_NAME
